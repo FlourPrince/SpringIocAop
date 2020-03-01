@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+        <!--   <bean id="userDao"  class="com.Ioc.daoImpl.UserDaoImpl" >
+          </bean>
+          1.使用默认构造函数创建对象
+           <bean id="userService" class="com.Ioc.serviceImpl.UserServiceImpl" scope="prototype"/> -->
+           <!-- 有参构造创建对象 -->
+           <!--  <bean id="userService" class="com.Ioc.serviceImpl.UserServiceImpl"   scope="prototype">
+              <constructor-arg index="0" ref="userDao" />
+             </bean> -->
+            
+          <!-- 2.使用类中的方法创建对象 存入容器
+	 *            3.使用静态方法创建对象 存入容器 -->
+         <!--  <bean id="factoryBean" class="com.Ioc.tools.FactoryBean" ></bean> -->
+         <!--   <bean id="userService"  factory-bean="factoryBean"  factory-method="getBean"></bean> -->
+            
+            <!-- 扫描该包下所有文件注解 -->
+            <context:component-scan base-package="com.Ioc"></context:component-scan>
+            
+            <bean id="adviceAop" class="com.Ioc.test.AdviceAop"> </bean>
+ 
+                <aop:config> 
+            <!-- publi void test ()        public(可以省略)  void 包名 文件名.方法名   * * ..*.*()            -->
+            <aop:pointcut id="pt1" expression="execution(*  com.Ioc.serviceImpl.*.*(..))" />
+            
+               <aop:aspect id="adviceAop" ref="adviceAop"> 
+               
+                 <aop:before method="adviceBefore" pointcut-ref="pt1"/>
+               
+                 <aop:after-throwing method="adviceAfterThrow" pointcut-ref="pt1"/>
+                 
+                 <aop:after-returning method="adviceAfterReturn" pointcut-ref="pt1"/>
+                 
+                 <aop:after method="adviceAfter" pointcut-ref="pt1"/>
+                 
+               </aop:aspect>
+               
+            </aop:config>
+            
+            
+      </beans>
